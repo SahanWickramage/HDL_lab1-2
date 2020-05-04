@@ -17,7 +17,7 @@ architecture bench of clock_divider_tb is
   signal reset: std_logic := '0';
   signal one_hz_enable: std_logic;
 
-  constant clock_period: time    := 10 ns;
+  constant clock_period: time    := 20 ns; -- f = 50MHz
   signal stop_the_clock: boolean := false;
 
 begin
