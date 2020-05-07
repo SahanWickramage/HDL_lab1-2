@@ -42,10 +42,16 @@ begin
 
   clocking: process
   begin
-    while not stop_the_clock loop
-      clk <= '0', '1' after clock_period / 2;
-      wait for clock_period;
-    end loop;
+    -- while not stop_the_clock loop
+    --  clk <= '0', '1' after clock_period / 2;
+    --  wait for clock_period;
+    -- end loop;
+    -- if not stop_the_clock then
+    --    clk <= '0';
+    --    wait for clock_period / 2;
+    --    clk <= '1';
+    --    wait for clock_period / 2;
+    -- end if;
     wait;
   end process;
 

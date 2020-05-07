@@ -24,7 +24,7 @@ begin
     elsif rising_edge ( clk ) then
         count <= count + 1;
         -- if (count = 50_000_000) then -- f --> f/100, 100MHz --> 1Hz
-        if (count = 5) then -- f --> f/10, 100MHz --> 10MHz
+        if (count = 4) then -- f --> f/10, 100MHz --> 10MHz
             temp_value <= NOT temp_value;
             count <= 0;
         end if;
