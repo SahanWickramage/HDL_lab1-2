@@ -17,7 +17,6 @@ basys3_ov7670_v1.cache/
 #Source files:
 #########
 #Do NOT ignore VHDL, Verilog, block diagrams or EDIF files.
-!*.xpr
 !*.vhd
 !*.v
 !*.bd
