@@ -4,7 +4,7 @@
 # Block Designs: bd/bram/bram.bd
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==bram || ORIG_REF_NAME==bram} -quiet] -quiet
 
-# IP: bd/bram/ip/bram_blk_mem_gen_0_0/bram_blk_mem_gen_0_0.xci
+# IP: bd/bram/ip/bram_blk_mem_gen_0_0_1/bram_blk_mem_gen_0_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==bram_blk_mem_gen_0_0 || ORIG_REF_NAME==bram_blk_mem_gen_0_0} -quiet] -quiet
 
 # XDC: bd/bram/bram_ooc.xdc

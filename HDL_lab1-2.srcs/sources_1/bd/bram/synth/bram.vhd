@@ -1,8 +1,8 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
---Date        : Tue May  5 09:25:58 2020
---Host        : DESKTOP-U5NAAV0 running 64-bit major release  (build 9200)
+--Date        : Thu May 14 23:09:08 2020
+--Host        : DESKTOP-5GV2NU3 running 64-bit major release  (build 9200)
 --Command     : generate_target bram.bd
 --Design      : bram
 --Purpose     : IP block netlist
