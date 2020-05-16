@@ -52,6 +52,7 @@ component FSM is
            Reset_Sync : in STD_LOGIC;
            expired : in STD_LOGIC;
            prog_sync : in STD_LOGIC;
+           clk : in STD_LOGIC;
            WR_Reset : out STD_LOGIC;
            interval : out STD_LOGIC_VECTOR (1 downto 0);
            start_time : out STD_LOGIC;
@@ -120,6 +121,7 @@ port map ( sensor_sync => sensor_sync,
                WR => WR,
                prog_sync => prog_sync,
                Reset_Sync => reset_sync,
+               clk => clock,
                WR_Reset => WR_Reset,
                expired => expired,
                interval => interval,
