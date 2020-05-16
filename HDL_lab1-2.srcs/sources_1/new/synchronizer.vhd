@@ -37,6 +37,7 @@ entity synchronizer is
            walk_request : in STD_LOGIC;
            reprogram : in STD_LOGIC;
            clk : in STD_LOGIC;
+           
            reset_sync : out STD_LOGIC;
            sensor_sync : out STD_LOGIC;
            wr_sync : out STD_LOGIC;
