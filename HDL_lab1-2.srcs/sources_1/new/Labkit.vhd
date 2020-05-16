@@ -47,15 +47,15 @@ end Labkit;
 
 architecture Behavioral of Labkit is
 component FSM is
-    Port ( sensor : in STD_LOGIC;
+    Port ( 
            WR : in STD_LOGIC;
            Reset_Sync : in STD_LOGIC;
            expired : in STD_LOGIC;
+           sensor_sync : in STD_LOGIC;
            prog_sync : in STD_LOGIC;
            clk : in STD_LOGIC;
            WR_Reset : out STD_LOGIC;
            interval : out STD_LOGIC_VECTOR (1 downto 0);
-           WR_Reset : out STD_LOGIC;
            start_time : out STD_LOGIC;
            leds : out STD_LOGIC_VECTOR (6 downto 0)
            );
@@ -118,7 +118,7 @@ signal one_hz_enable : STD_LOGIC;
 
 begin
 FSM_1 : FSM
-port map ( sensor_sync => sensor_sync,
+port map (     sensor_sync => sensor_sync,
                WR => WR,
                prog_sync => prog_sync,
                Reset_Sync => reset_sync,

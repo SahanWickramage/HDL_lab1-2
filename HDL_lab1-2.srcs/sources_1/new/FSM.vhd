@@ -75,7 +75,8 @@ PROCESS (clk, sensor_sync, expired, WR)
         CASE State IS
                 -- If the current state is A and P is set to 1, then the
                 -- next state is B
-                WHEN A =>	    
+                WHEN A =>
+                    leds <= "0011000";  
                     IF expired = '1' THEN
                         IF count = 2 THEN
                             IF sensor_sync = '1' THEN 
@@ -104,6 +105,7 @@ PROCESS (clk, sensor_sync, expired, WR)
                     END IF;
     
                 WHEN B => 
+                    leds <= "0101000";
                     IF expired = '1' THEN 
                         IF WR = '1' THEN
                             State <= E;
@@ -119,6 +121,7 @@ PROCESS (clk, sensor_sync, expired, WR)
                     END IF; 
                     
                 WHEN C => 
+                    leds <= "1001010";
                     IF expired = '1' THEN 
                         IF sensor_sync = '1' THEN 
                              State <= C;
@@ -134,6 +137,7 @@ PROCESS (clk, sensor_sync, expired, WR)
                     END IF; 
         
                 WHEN D => 
+                    leds <= "1000100";
                     IF expired = '1' THEN 
                         State <= A;
                         count <= 2;
@@ -143,6 +147,7 @@ PROCESS (clk, sensor_sync, expired, WR)
                     END IF;
                     
                 WHEN E => 
+                    leds <= "1001001";
                     IF expired = '1' THEN 
                         State <= C;
                         interval <= "00";
@@ -154,24 +159,5 @@ PROCESS (clk, sensor_sync, expired, WR)
     end if;
     
     END PROCESS;
-PROCESS
-    BEGIN
-    CASE State IS
-        WHEN A => 
-        leds <= "0011000";
-               
-         WHEN B => 
-         leds <= "0101000";
-               
-         WHEN C => 
-         leds <= "1001010";
-         
-         WHEN D => 
-         leds <= "1000100";
-			
-         WHEN E => 
-         leds <= "1001001";
-			  
-    END CASE;
-END PROCESS;
+
 end Behavioral;
