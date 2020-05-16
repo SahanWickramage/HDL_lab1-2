@@ -32,7 +32,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity FSM is
-    Port ( sensor : in STD_LOGIC;
+    Port ( sensor_sync : in STD_LOGIC;
            WR : in STD_LOGIC;
            WR_Reset : in STD_LOGIC;
            expired : in STD_LOGIC;
@@ -40,13 +40,7 @@ entity FSM is
            
            interval : out STD_LOGIC_VECTOR (1 downto 0);
            start_time : out STD_LOGIC;
-           Rm : out STD_LOGIC;
-           Ym : out STD_LOGIC;
-           Gm : out STD_LOGIC;
-           Rs : out STD_LOGIC;
-           Ys : out STD_LOGIC;
-           Gs : out STD_LOGIC;
-           walk : out STD_LOGIC
+           leds : out STD_LOGIC_VECTOR (6 downto 0)
            );
 end FSM;
 
@@ -58,13 +52,13 @@ TYPE State_type IS (A, B, C, D, E);  -- Define the states
 							      
 begin
 
-PROCESS (sensor) 
+PROCESS (sensor_sync) 
     BEGIN
     CASE State IS
  			-- If the current state is A and P is set to 1, then the
 			-- next state is B
 			WHEN A => 			    
-				IF (expired = '1' and sensor = '1') THEN 
+				IF (expired = '1' and sensor_sync = '1') THEN 
 					State <= A;
 					interval <= "01";
 					start_time<='1';
@@ -74,7 +68,7 @@ PROCESS (sensor)
 					State <= A;
 				END IF;
 				
-				IF (expired = '1' and sensor = '0') THEN 
+				IF (expired = '1' and sensor_sync = '0') THEN 
 					State <= B;
 					interval <= "01"; --tYELL
 					start_time<='1';
@@ -108,7 +102,7 @@ PROCESS (sensor)
 					start_time<='1';
 				END IF; 
 				
-				IF (expired = '1' and sensor = '1') THEN 
+				IF (expired = '1' and sensor_sync = '1') THEN 
 					State <= C;
 					interval <= "01";--tEXT
 					start_time<='1';
@@ -143,50 +137,20 @@ PROCESS
     BEGIN
     CASE State IS
         WHEN A => 
-			   Rm <= '0';
-               Ym <= '0';
-               Gm <= '1';
-               Rs <= '1';
-               Ys <= '0';
-               Gs <= '0';
-               walk <= '0';
+        leds <= "0011000";
                
          WHEN B => 
-			   Rm <= '0';
-               Ym <= '1';
-               Gm <= '0';
-               Rs <= '1';
-               Ys <= '0';
-               Gs <= '0';
-               walk <= '0';
+         leds <= "0101000";
                
          WHEN C => 
-			   Rm <= '1';
-               Ym <= '0';
-               Gm <= '0';
-               Rs <= '1';
-               Ys <= '0';
-               Gs <= '1';
-               walk <= '0';
+         leds <= "1001010";
          
          WHEN D => 
-			   Rm <= '1';
-               Ym <= '0';
-               Gm <= '0';
-               Rs <= '0';
-               Ys <= '1';
-               Gs <= '0';
-               walk <= '0';
-               
+         leds <= "1000100";
+			
          WHEN E => 
-			   Rm <= '1';
-               Ym <= '0';
-               Gm <= '0';
-               Rs <= '1';
-               Ys <= '0';
-               Gs <= '0';
-               walk <= '1';
-    
+         leds <= "1001001";
+			  
     END CASE;
 END PROCESS;
 end Behavioral;
