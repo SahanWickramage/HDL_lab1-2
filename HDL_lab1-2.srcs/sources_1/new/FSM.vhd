@@ -32,7 +32,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity FSM is
-    Port ( sensor : in STD_LOGIC;
+    Port ( sensor_sync : in STD_LOGIC;
            WR : in STD_LOGIC;
            Reset_Sync : in STD_LOGIC;
            expired : in STD_LOGIC;
@@ -68,7 +68,7 @@ begin
 
 end process;
 
-PROCESS (clk, sensor, expired, WR) 
+PROCESS (clk, sensor_sync, expired, WR) 
     BEGIN
     
     if rising_edge(clk) then
@@ -78,7 +78,7 @@ PROCESS (clk, sensor, expired, WR)
                 WHEN A =>	    
                     IF expired = '1' THEN
                         IF count = 2 THEN
-                            IF sensor = '1' THEN 
+                            IF sensor_sync = '1' THEN 
                                 State <= A;
                                 count <= 0;
                                 interval <= "01";
@@ -94,7 +94,7 @@ PROCESS (clk, sensor, expired, WR)
                              
                         END IF;
                         
-                        ELSIF (count = 1 and sensor = '0') THEN
+                        ELSIF (count = 1 and sensor_sync = '0') THEN
                             State <= B;
                             count <= 0;
                             interval <= "10";
@@ -120,7 +120,7 @@ PROCESS (clk, sensor, expired, WR)
                     
                 WHEN C => 
                     IF expired = '1' THEN 
-                        IF sensor = '1' THEN 
+                        IF sensor_sync = '1' THEN 
                              State <= C;
                              interval <= "01";
                              start_time<='1';

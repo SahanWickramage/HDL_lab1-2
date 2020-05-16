@@ -49,19 +49,18 @@ architecture Behavioral of time_parameters is
 begin
 
 process(clk, prog_sync, time_parameter_selector, time_value)
-
 begin
-
     if rising_edge(clk) then
         if prog_sync = '1' then
-            case time_parameter_selector is
-                when "00" => t_base <= time_value;
-                when "01" => t_ext <= time_value;
-                when "10" => t_yel <= time_value;
-            end case;
+            if time_parameter_selector = "00" then
+                        t_base <= time_value;
+                    elsif time_parameter_selector = "01" then
+                        t_ext <= time_value;
+                    elsif time_parameter_selector = "10" then
+                        t_yel <= time_value;
+                    end if;
         end if;
     end if;
-
 end process;
 
 process(clk, interval)
@@ -69,12 +68,11 @@ process(clk, interval)
 begin
 
     if rising_edge(clk) then
-        case interval is
-            when "00" => temp_value <= t_base;
-            when "01" => temp_value <= t_ext;
-            when "10" => temp_value <= t_yel;
-        end case;
+        if interval = "00" then temp_value <= t_base;
+        elsif interval = "01" then temp_value <= t_ext;
+        elsif interval = "10" then temp_value <= t_yel;
         value <= temp_value;
+        end if;
     end if;
 
 end process;
