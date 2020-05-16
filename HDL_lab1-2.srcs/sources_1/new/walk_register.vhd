@@ -21,7 +21,6 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.numeric_std.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -33,29 +32,22 @@ use IEEE.numeric_std.ALL;
 --use UNISIM.VComponents.all;
 
 entity walk_register is
-    Port ( clk : in std_logic;
-           WR_Sync : in STD_LOGIC;
+    Port ( WR_Sync : in STD_LOGIC;
            WR_Reset : in STD_LOGIC;
-           WR : out STD_LOGIC);
+           WR : out STD_LOGIC := '0');
 end walk_register;
 
 architecture Behavioral of walk_register is
 
-signal wr_value : std_logic := '0';
-
 begin
 
-process (clk, WR_sync, WR_Reset)
+process (WR_sync, WR_Reset)
 begin
-    if falling_edge (clk) then
-        if (WR_Reset = '1') then
-            wr_value <= '0';
-        elsif (WR_sync = '1') then
-            wr_value <= '1';
-        end if;
+    if (WR_Reset = '1') then
+        WR <= '0';
+    elsif (WR_sync = '1') then
+        WR <= '1';
     end if;
-    
-    WR <= wr_value;
 end process;    
     
 end Behavioral;

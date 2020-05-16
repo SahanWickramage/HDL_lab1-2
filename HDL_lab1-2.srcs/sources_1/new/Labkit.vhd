@@ -55,7 +55,6 @@ component FSM is
            clk : in STD_LOGIC;
            WR_Reset : out STD_LOGIC;
            interval : out STD_LOGIC_VECTOR (1 downto 0);
-           WR_Reset : out STD_LOGIC;
            start_time : out STD_LOGIC;
            leds : out STD_LOGIC_VECTOR (6 downto 0)
            );
@@ -74,8 +73,7 @@ component synchronizer is
 end component;
 
 component walk_register is
-    Port(  clk : in std_logic;
-           WR_Sync : in STD_LOGIC;
+    Port(  WR_Sync : in STD_LOGIC;
            WR_Reset : in STD_LOGIC;
            WR : out STD_LOGIC);
 end component;
@@ -118,7 +116,7 @@ signal one_hz_enable : STD_LOGIC;
 
 begin
 FSM_1 : FSM
-port map ( sensor_sync => sensor_sync,
+port map ( sensor => sensor_sync,
                WR => WR,
                prog_sync => prog_sync,
                Reset_Sync => reset_sync,
@@ -143,8 +141,7 @@ port map(
 );
 
 walk_register_1 : walk_register
-port map(
-           clk => clock,
+port map( 
            WR_Sync => wr_sync,
            WR_Reset => WR_Reset,
            WR => WR);

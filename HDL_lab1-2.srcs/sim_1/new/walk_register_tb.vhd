@@ -8,13 +8,11 @@ end;
 architecture bench of walk_register_tb is
 
   component walk_register
-      Port ( clk : in std_logic;
-             WR_Sync : in STD_LOGIC;
+      Port ( WR_Sync : in STD_LOGIC;
              WR_Reset : in STD_LOGIC;
              WR : out STD_LOGIC);
   end component;
 
-  signal clk: std_logic;
   signal WR_Sync: STD_LOGIC;
   signal WR_Reset: STD_LOGIC;
   signal WR: STD_LOGIC;
@@ -24,8 +22,7 @@ architecture bench of walk_register_tb is
 
 begin
 
-  uut: walk_register port map ( clk      => clk,
-                                WR_Sync  => WR_Sync,
+  uut: walk_register port map ( WR_Sync  => WR_Sync,
                                 WR_Reset => WR_Reset,
                                 WR       => WR );
 
@@ -57,14 +54,5 @@ begin
     -- stop_the_clock <= true;
     wait;
   end process;
-
-  -- clocking: process
-  -- begin
-  --  while not stop_the_clock loop
-  --    clk <= '0', '1' after clock_period / 2;
-  --    wait for clock_period;
-  --  end loop;
-  --  wait;
-  -- end process;
 
 end;

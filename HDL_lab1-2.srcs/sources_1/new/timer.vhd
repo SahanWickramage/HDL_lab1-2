@@ -61,18 +61,18 @@ begin
     end if;
 
     if timer_running = '1' then
-        if count = 0 then
-            timer_running <='0';
-            previous_state <= '0';
-            expired <= '1';
-            expired <= '0' after 20 ns;
-        else
-            if (one_hz_enable = '1' and previous_state = '0') then
+        if (one_hz_enable = '1' and previous_state = '0') then
+            if count = 0 then
+                timer_running <='0';
+                previous_state <= '0';
+                expired <= '1';
+                expired <= '0' after 20 ns;
+            else
                 previous_state <= '1';
                 count <= count - 1;
-            elsif (one_hz_enable = '0' and previous_state = '1') then
-                previous_state <= '0';
             end if;
+        elsif (one_hz_enable = '0' and previous_state = '1') then
+            previous_state <= '0';
         end if;
     end if;
 end process;
