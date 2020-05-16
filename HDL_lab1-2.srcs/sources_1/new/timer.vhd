@@ -36,27 +36,30 @@ entity timer is
     Port ( one_hz_enable : in STD_LOGIC;
            start_timer : in STD_LOGIC;
            value : in STD_LOGIC_VECTOR (3 downto 0);
-           expired : out STD_LOGIC);
+           expired : out STD_LOGIC := '0');
 end timer;
 
 architecture Behavioral of timer is
     signal count: integer            := 0;
     signal previous_state: std_logic := '0';
     signal timer_running: std_logic  := '0';
+
 begin
+-- process (start_timer)
+-- begin
+--    if (start_timer = '1' and timer_running = '0') then
+--        count := to_integer(unsigned(value));
+--        timer_running <= '1';
+--    end if;
+-- end process;
 
-expired <= '0';
-
-process (start_timer)
+process (one_hz_enable, value, start_timer)
 begin
     if (start_timer = '1' and timer_running = '0') then
         count <= to_integer(unsigned(value));
         timer_running <= '1';
     end if;
-end process;
 
-process (one_hz_enable, value)
-begin
     if timer_running = '1' then
         if count = 0 then
             timer_running <='0';
