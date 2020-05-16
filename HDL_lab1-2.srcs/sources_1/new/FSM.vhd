@@ -32,13 +32,15 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity FSM is
-    Port ( sensor_sync : in STD_LOGIC;
+    Port ( sensor : in STD_LOGIC;
            WR : in STD_LOGIC;
-           WR_Reset : in STD_LOGIC;
+           Reset_Sync : in STD_LOGIC;
            expired : in STD_LOGIC;
            prog_sync : in STD_LOGIC;
+           clk : in STD_LOGIC;
            
            interval : out STD_LOGIC_VECTOR (1 downto 0);
+           WR_Reset : out STD_LOGIC;
            start_time : out STD_LOGIC;
            leds : out STD_LOGIC_VECTOR (6 downto 0)
            );
@@ -47,92 +49,111 @@ end FSM;
 -- Architecture definition for the FSM entity
 Architecture Behavioral of FSM is
 TYPE State_type IS (A, B, C, D, E);  -- Define the states
-	SIGNAL State : State_Type;    -- Create a signal that uses 
+SIGNAL State : State_Type;    -- Create a signal that uses 
+signal count: integer         := 0;
 							      -- the different 
 							      
 begin
 
-PROCESS (sensor_sync) 
+process (Reset_Sync, prog_sync) --resetting process
+begin
+
+    if Reset_Sync = '1' or prog_sync = '1' then
+       State <= A;
+       count <= 2;
+       interval <= "00";
+       start_time <= '1';
+       start_time <= '0' after 20 ns; 
+    end if;
+
+end process;
+
+PROCESS (clk, sensor, expired, WR) 
     BEGIN
-    CASE State IS
- 			-- If the current state is A and P is set to 1, then the
-			-- next state is B
-			WHEN A => 			    
-				IF (expired = '1' and sensor_sync = '1') THEN 
-					State <= A;
-					interval <= "01";
-					start_time<='1';
-				END IF; 
-				
-				IF (expired = '0') THEN 
-					State <= A;
-				END IF;
-				
-				IF (expired = '1' and sensor_sync = '0') THEN 
-					State <= B;
-					interval <= "01"; --tYELL
-					start_time<='1';
-				END IF; 
-
-			WHEN B => 
-				IF (expired = '0') THEN 
-					State <= B;
-				END IF;
-				
-				IF (WR = '1') THEN 
-					State <= E;
-					interval <= "01"; --tEXT
-					start_time<='1';
-				END IF;
-				
-				IF (expired = '1') THEN 
-					State <= C;
-					interval <= "01";
-					start_time<='1';
-				END IF; 
-				
-			WHEN C => 
-				IF (expired = '0') THEN 
-					State <= C;
-				END IF;
-				
-				IF expired ='1' THEN 
-					State <= D;
-					interval <= "01";--tYELL
-					start_time<='1';
-				END IF; 
-				
-				IF (expired = '1' and sensor_sync = '1') THEN 
-					State <= C;
-					interval <= "01";--tEXT
-					start_time<='1';
-				END IF; 
- 	
-			WHEN D=> 
-				IF (expired = '0') THEN 
-					State <= D;
-				END IF; 
-				
-				IF expired='1' THEN 
-					State <= A; 
-					interval <= "01";--2tBASE
-					start_time<='1';
-				END IF; 
-				
-			WHEN E=> 
-				IF (expired = '0') THEN 
-					State <= E;
-				END IF; 
-				
-				IF expired='1' THEN 
-					State <= C; 
-					interval <= "01";--tBASE
-					start_time<='1';
-				END IF; 
-
-		END CASE; 
-    END PROCESS;
     
+    if rising_edge(clk) then
+        CASE State IS
+                -- If the current state is A and P is set to 1, then the
+                -- next state is B
+                WHEN A =>	    
+                    IF expired = '1' THEN
+                        IF count = 2 THEN
+                            IF sensor = '1' THEN 
+                                State <= A;
+                                count <= 0;
+                                interval <= "01";
+                                start_time<='1';
+                                start_time <= '0' after 20 ns;
+                             ELSE
+                                State <= A;
+                                count <= 1;
+                                interval <= "00";
+                                start_time<='1';
+                                start_time <= '0' after 20 ns;
+                             END IF;
+                             
+                        END IF;
+                        
+                        ELSIF (count = 1 and sensor = '0') THEN
+                            State <= B;
+                            count <= 0;
+                            interval <= "10";
+                            start_time<='1';
+                            start_time <= '0' after 20 ns;
+                        
+                    END IF;
+    
+                WHEN B => 
+                    IF expired = '1' THEN 
+                        IF WR = '1' THEN
+                            State <= E;
+                            interval <= "01";
+                            start_time<='1';
+                            start_time <= '0' after 20 ns;
+                        ELSE
+                            State <= C;
+                            interval <= "00";
+                            start_time<='1';
+                            start_time <= '0' after 20 ns;
+                        END IF;
+                    END IF; 
+                    
+                WHEN C => 
+                    IF expired = '1' THEN 
+                        IF sensor = '1' THEN 
+                             State <= C;
+                             interval <= "01";
+                             start_time<='1';
+                             start_time <= '0' after 20 ns;
+                          ELSE
+                             State <= D;
+                             interval <= "10";
+                             start_time<='1';
+                             start_time <= '0' after 20 ns;
+                          END IF;
+                    END IF; 
+        
+                WHEN D => 
+                    IF expired = '1' THEN 
+                        State <= A;
+                        count <= 2;
+                        interval <= "00";
+                        start_time <= '1';
+                        start_time <= '0' after 20 ns; 
+                    END IF;
+                    
+                WHEN E => 
+                    IF expired = '1' THEN 
+                        State <= C;
+                        interval <= "00";
+                        start_time<='1';
+                        start_time <= '0' after 20 ns;
+                    END IF; 
+    
+        END CASE; 
+    end if;
+    
+    END PROCESS;
 PROCESS
     BEGIN
     CASE State IS
