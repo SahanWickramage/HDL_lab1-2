@@ -63,34 +63,24 @@ PROCESS (clk, sensor_sync, expired, WR, Reset_Sync, prog_sync)
        count <= 2;
        interval <= "00";
        start_time <= '1';
-       start_time <= '0' after 20 ns;
-    else
-        if rising_edge(clk) then
-            CASE State IS
-                    WHEN A =>	    
-                        IF expired = '1' THEN
-                            IF count = 2 THEN
-                                IF sensor_sync = '1' THEN 
-                                    State <= A;
-                                    leds <= "0011000";
-                                    count <= 0;
-                                    interval <= "01";
-                                    start_time<='1';
-                                    start_time <= '0' after 20 ns;
-                                 ELSE
-                                    State <= A;
-                                    leds <= "0011000";
-                                    count <= 1;
-                                    interval <= "00";
-                                    start_time<='1';
-                                    start_time <= '0' after 20 ns;
-                                 END IF;
-                                 
-                            END IF;
-                            
-                            ELSIF (count = 1 and sensor_sync = '0') THEN
-                                State <= B;
-                                leds <= "0101000";
+       start_time <= '0' after 20 ns; 
+    end if;
+
+end process;
+
+PROCESS (clk, sensor_sync, expired, WR) 
+    BEGIN
+    
+    if rising_edge(clk) then
+        CASE State IS
+                -- If the current state is A and P is set to 1, then the
+                -- next state is B
+                WHEN A =>
+                    leds <= "0011000";  
+                    IF expired = '1' THEN
+                        IF count = 2 THEN
+                            IF sensor_sync = '1' THEN 
+                                State <= A;
                                 count <= 0;
                                 interval <= "10";
                                 start_time<='1';
@@ -142,20 +132,63 @@ PROCESS (clk, sensor_sync, expired, WR, Reset_Sync, prog_sync)
                             start_time <= '0' after 20 ns; 
                         END IF;
                         
-                    WHEN E => 
-                        IF expired = '1' THEN 
+                    END IF;
+    
+                WHEN B => 
+                    leds <= "0101000";
+                    IF expired = '1' THEN 
+                        IF WR = '1' THEN
+                            State <= E;
+                            interval <= "01";
+                            start_time<='1';
+                            start_time <= '0' after 20 ns;
+                        ELSE
                             State <= C;
                             leds <= "1001010";
                             interval <= "00";
                             start_time<='1';
                             start_time <= '0' after 20 ns;
-                            WR_Reset <= '1';
-                            WR_Reset <= '0' after 20 ns;
-                        END IF; 
+                        END IF;
+                    END IF; 
+                    
+                WHEN C => 
+                    leds <= "1001010";
+                    IF expired = '1' THEN 
+                        IF sensor_sync = '1' THEN 
+                             State <= C;
+                             interval <= "01";
+                             start_time<='1';
+                             start_time <= '0' after 20 ns;
+                          ELSE
+                             State <= D;
+                             interval <= "10";
+                             start_time<='1';
+                             start_time <= '0' after 20 ns;
+                          END IF;
+                    END IF; 
         
-            END CASE; 
-        end if;
+                WHEN D => 
+                    leds <= "1000100";
+                    IF expired = '1' THEN 
+                        State <= A;
+                        count <= 2;
+                        interval <= "00";
+                        start_time <= '1';
+                        start_time <= '0' after 20 ns; 
+                    END IF;
+                    
+                WHEN E => 
+                    leds <= "1001001";
+                    IF expired = '1' THEN 
+                        State <= C;
+                        interval <= "00";
+                        start_time<='1';
+                        start_time <= '0' after 20 ns;
+                    END IF; 
+    
+        END CASE; 
     end if;
     
     END PROCESS;
+
 end Behavioral;
