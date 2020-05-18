@@ -39,10 +39,10 @@ entity FSM is
            prog_sync : in STD_LOGIC;
            clk : in STD_LOGIC;
            
-           interval : out STD_LOGIC_VECTOR (1 downto 0);
-           WR_Reset : out STD_LOGIC;
-           start_time : out STD_LOGIC;
-           leds : out STD_LOGIC_VECTOR (6 downto 0)
+           interval : out STD_LOGIC_VECTOR (1 downto 0) := "00";
+           WR_Reset : out STD_LOGIC := '0';
+           start_time : out STD_LOGIC := '0';
+           leds : out STD_LOGIC_VECTOR (6 downto 0) := "0011000"
            );
 end FSM;
 
@@ -59,6 +59,7 @@ PROCESS (clk, sensor_sync, expired, WR)
     BEGIN
     
     if Reset_Sync = '1' or prog_sync = '1' then
+       leds <= "0011000"; 
        State <= A;
        count <= 2;
        interval <= "00";
