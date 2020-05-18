@@ -48,8 +48,9 @@ end FSM;
 
 -- Architecture definition for the FSM entity
 Architecture Behavioral of FSM is
-TYPE State_type IS (A, B, C, D, E);  -- Define the states
-SIGNAL State : State_Type;    -- Create a signal that uses 
+TYPE states IS (A, B, C, D, E);  -- Define the states
+--SIGNAL State : State_Type;    -- Create a signal that uses 
+signal State : states;
 signal count: integer         := 0;
 							      -- the different 
 							      

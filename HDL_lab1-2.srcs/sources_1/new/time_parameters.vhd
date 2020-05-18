@@ -50,8 +50,8 @@ begin
 
 process(clk, prog_sync, time_parameter_selector, time_value)
 begin
-    if rising_edge(clk) then
-        if prog_sync = '1' then
+--    if rising_edge(clk) then
+        if (prog_sync = '1' and clk = '1') then
             if time_parameter_selector = "00" then
                         t_base <= time_value;
                     elsif time_parameter_selector = "01" then
@@ -60,19 +60,23 @@ begin
                         t_yel <= time_value;
                     end if;
         end if;
-    end if;
+--    end if;
 end process;
 
 process(clk, interval)
 
 begin
 
-    if rising_edge(clk) then
-        if interval = "00" then temp_value <= t_base;
-        elsif interval = "01" then temp_value <= t_ext;
-        elsif interval = "10" then temp_value <= t_yel;
-        value <= temp_value;
-        end if;
+    if (clk = '1' and prog_sync = '0' ) then
+        if interval = "00" then
+                        value <= t_base;
+                    elsif interval = "01" then
+                        value <= t_ext;
+                    elsif interval = "10" then
+                        value <= t_yel;
+                    else
+                        value <= t_base;
+                    end if;
     end if;
 
 end process;
