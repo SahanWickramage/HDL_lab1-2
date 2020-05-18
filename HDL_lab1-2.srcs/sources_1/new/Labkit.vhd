@@ -74,8 +74,7 @@ component synchronizer is
 end component;
 
 component walk_register is
-    Port(  clk : in std_logic;
-           WR_Sync : in STD_LOGIC;
+    Port(  WR_Sync : in STD_LOGIC;
            WR_Reset : in STD_LOGIC;
            WR : out STD_LOGIC);
 end component;
@@ -143,8 +142,7 @@ port map(
 );
 
 walk_register_1 : walk_register
-port map(
-           clk => clock,
+port map( 
            WR_Sync => wr_sync,
            WR_Reset => WR_Reset,
            WR => WR);
