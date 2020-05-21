@@ -14,7 +14,7 @@ architecture bench of fsm2_tb is
              wr : in std_logic;
              prog_sync : in std_logic;
              reset_sync : in std_logic;
-             led_values : out STD_LOGIC_VECTOR (2 downto 0) := "000";
+             leds : out STD_LOGIC_VECTOR (6 downto 0) := "0011000";
              interval: out std_logic_vector (1 downto 0) := "00";
              wr_reset: out std_logic := '0';
              start_timer: out std_logic := '0');
@@ -26,7 +26,7 @@ architecture bench of fsm2_tb is
   signal wr: std_logic;
   signal prog_sync: std_logic;
   signal reset_sync: std_logic;
-  signal led_values: STD_LOGIC_VECTOR (2 downto 0) := "000";
+  signal leds: STD_LOGIC_VECTOR (6 downto 0) := "0011000";
   signal interval: std_logic_vector (1 downto 0) := "00";
   signal wr_reset: std_logic := '0';
   signal start_timer: std_logic := '0';
@@ -39,7 +39,7 @@ begin
                        wr          => wr,
                        prog_sync   => prog_sync,
                        reset_sync  => reset_sync,
-                       led_values  => led_values,
+                       leds        => leds,
                        interval    => interval,
                        wr_reset    => wr_reset,
                        start_timer => start_timer );
@@ -72,6 +72,5 @@ begin
      clk <= '0', '1' after 50 ns;
      wait for 100 ns;
   end process;
-
 
 end;
