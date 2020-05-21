@@ -58,6 +58,7 @@ begin
     if (start_timer = '1' and timer_running = '0') then
         count <= to_integer(unsigned(value));
         timer_running <= '1';
+        previous_state <= '0';
     end if;
 
     if timer_running = '1' then
@@ -66,7 +67,7 @@ begin
                 timer_running <='0';
                 previous_state <= '0';
                 expired <= '1';
-                expired <= '0' after 20 ns;
+                expired <= '0' after 75 ns;
             else
                 previous_state <= '1';
                 count <= count - 1;

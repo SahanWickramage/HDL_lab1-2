@@ -28,30 +28,15 @@ begin
 
   stimulus: process
   begin
-  
-    -- Put initialisation code here
-    -- wait for 100 ns;
-    -- stop_the_clock <= false;
-    
-    wait for 500 ns;
-    -- Put test bench stimulus code here
-    
-    stop_the_clock <= true;
+    reset <= '0';
+    wait for 2 us;
     wait;
   end process;
 
   clocking: process
   begin
-    -- while not stop_the_clock loop
-    --  clk <= '0', '1' after clock_period / 2;
-    --  wait for clock_period;
-    -- end loop;
-    -- if not stop_the_clock then
-    --    clk <= '0';
-    --    wait for clock_period / 2;
-    --    clk <= '1';
-    --    wait for clock_period / 2;
-    -- end if;
+    clk <= '0', '1' after clock_period / 2;
+    wait for clock_period;
     wait;
   end process;
 

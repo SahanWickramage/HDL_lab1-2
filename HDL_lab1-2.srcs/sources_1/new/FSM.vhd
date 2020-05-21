@@ -48,9 +48,8 @@ end FSM;
 
 -- Architecture definition for the FSM entity
 Architecture Behavioral of FSM is
-TYPE states IS (A, B, C, D, E);  -- Define the states
---SIGNAL State : State_Type;    -- Create a signal that uses 
-signal State : states;
+TYPE State_type IS (A, B, C, D, E);  -- Define the states
+SIGNAL State : State_Type;    -- Create a signal that uses 
 signal count: integer         := 0;
 							      -- the different 
 							      
@@ -67,7 +66,7 @@ PROCESS (clk, sensor_sync, expired, WR)
        start_time <= '1';
        start_time <= '0' after 20 ns;
     else
-        if rising_edge(clk) then
+        if clk = '1' then
             CASE State IS
                     -- If the current state is A and P is set to 1, then the
                     -- next state is B

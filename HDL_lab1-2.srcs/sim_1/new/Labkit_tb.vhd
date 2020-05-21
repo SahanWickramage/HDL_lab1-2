@@ -15,7 +15,7 @@ architecture bench of Labkit_tb is
              time_parameter_selector : in STD_LOGIC_VECTOR (1 downto 0);
              time_value : in STD_LOGIC_VECTOR (3 downto 0);
              clock : in STD_LOGIC;
-             leds : out STD_LOGIC_VECTOR (6 downto 0)
+             leds : out STD_LOGIC_VECTOR (2 downto 0)
             );
   end component;
 
@@ -26,7 +26,7 @@ architecture bench of Labkit_tb is
   signal time_parameter_selector: STD_LOGIC_VECTOR (1 downto 0);
   signal time_value: STD_LOGIC_VECTOR (3 downto 0);
   signal clock: STD_LOGIC;
-  signal leds: STD_LOGIC_VECTOR (6 downto 0) ;
+  signal leds: STD_LOGIC_VECTOR (2 downto 0) ;
 
 begin
 
