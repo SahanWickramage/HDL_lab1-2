@@ -39,13 +39,14 @@ entity Labkit is
            time_parameter_selector : in STD_LOGIC_VECTOR (1 downto 0);
            time_value : in STD_LOGIC_VECTOR (3 downto 0);
            clock : in STD_LOGIC;
-           leds : out STD_LOGIC_VECTOR (2 downto 0)
+           leds : out STD_LOGIC_VECTOR (6 downto 0)
           );
            
 end Labkit;
 
 
 architecture Behavioral of Labkit is
+
 component fsm2 is
     Port ( 
            WR : in STD_LOGIC;
@@ -57,7 +58,7 @@ component fsm2 is
            WR_Reset : out STD_LOGIC;
            interval : out STD_LOGIC_VECTOR (1 downto 0);
            start_timer : out STD_LOGIC;
-           led_values : out STD_LOGIC_VECTOR (2 downto 0)
+           leds : out STD_LOGIC_VECTOR (6 downto 0)
            );
 end component;
 
@@ -126,7 +127,7 @@ port map (     sensor_sync => sensor_sync,
                expired => expired,
                interval => interval,
                start_timer => start_time,
-               led_values => leds);
+               leds => leds);
 
 synchronizer_1 : synchronizer
 port map(
